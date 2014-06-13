@@ -6,6 +6,7 @@ Wraps libraries for reading foreign file formats:
 * Evan Miller's Stata, SPSS, ... reader
 * Avik Sengupta's Excel reader
 * JSON input/output
+* Fixed-width text input/output
 
 # Usage Example
 

@@ -2,11 +2,7 @@
 # Correctness Tests
 #
 
-using Base.Test
-using DataFrames
-using DataFramesIO
-
-my_tests = ["json.jl"]
+my_tests = ["fwf.jl", "json.jl"]
 
 @printf "Running tests:\n"
 

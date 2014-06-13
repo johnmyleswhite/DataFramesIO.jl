@@ -1,12 +1,16 @@
 module DataFramesIO
-	using DataArrays
-	using DataFrames
-	using JSON
 
-	export json2df, df2json
-	# export xls2df, df2xls
-	# export stata2df, df2stata
-	# export spss2df, df2spss
+using DataFrames
+using JSON
 
-	include("json.jl")
-end
+export json2df, df2json,
+       fwf2df #, df2fwf,
+       # rda2df, df2rda,
+       # xls2df, df2xls,
+       # stata2df, df2stata,
+       # spss2df, df2spss
+
+include("fwf.jl")
+include("json.jl")
+
+end # module DataFramesIO
