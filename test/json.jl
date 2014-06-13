@@ -27,9 +27,9 @@ module TestJSON
     df = json2df(s)
     @test isequal(size(df, 1), 3)
     @test isequal(size(df, 2), 4)
-    @test isequal(colnames(df), ["company", "id", "price", "symbol"])
-    @test isequal(df[3, "id"], 3)
-    @test isequal(df[3, "price"], 77.58)
+    @test isequal(names(df), [:company, :id, :price, :symbol])
+    @test isequal(df[3, :id], 3)
+    @test isequal(df[3, :price], 77.58)
     json = df2json(df)
     df2 = json2df(json)
     @test df == df2
