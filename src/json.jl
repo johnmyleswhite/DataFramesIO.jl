@@ -22,8 +22,11 @@ function json2df(s::String) # -> DataFrame
     if nrows == 0
         return DataFrame()
     end
-    colnames = collect(reduce((colall, row) -> union(colall, Set(collect(keys(row)))), Set(), arrayofhashes))
-    sort!(colnames)
+    colnamesset = Set(collect(keys(arrayofhashes[1])))
+    for i in 2:length(arrayofhashes)
+        union!(colnamesset, keys(arrayofhashes[i]))
+    end
+    colnames = sort(collect(colnamesset))
     # Check that keys are valid column names
     ncols = length(colnames)
     df = DataFrame(repeat([Any], inner = [ncols]), convert(Vector{Symbol}, colnames), nrows)
