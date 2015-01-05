@@ -39,12 +39,14 @@ end
 
 function df2json(adf::AbstractDataFrame) # -> UTF8String
     nrows, ncols = size(adf)
-    cnames = colnames(adf)
+    cnames = names(adf)
     arrayofhashes = Array(Dict{UTF8String, Any}, nrows)
     for i in 1:nrows
         arrayofhashes[i] = Dict{UTF8String, Any}()
         for j in 1:ncols
-            arrayofhashes[i][cnames[j]] = adf[i, j]
+            if adf[i, j] !== NA
+                arrayofhashes[i][string(cnames[j])] = adf[i, j] #convert(::Type{UTF8String}, ::Symbol) would be ideal but apparently such method does not exist
+            end
         end
     end
     return JSON.json(arrayofhashes)
