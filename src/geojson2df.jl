@@ -39,16 +39,16 @@ end
 function df2geojson(adf::AbstractDataFrame; geometry=:geometry) # -> GeoJSON.FeatureCollection
     nrows, ncols = size(adf)
     cnames = names(adf)
-    stringnames = map(string, cnames)
+    hasid = in(:id, cnames)
     collection = FeatureCollection(Feature[])
     sizehint!(collection.features, nrows)
     for i in 1:nrows
         push!(collection.features, Feature(adf[i, :geometry], Dict{String,Any}()))
-        if adf[i, :id] !== NA
+        if hasid && adf[i, :id] !== NA
             collection.features[i].id = adf[i, :id]
         end
-        for j in 3:ncols
-            if adf[i, j] !== NA
+        for j in 1:ncols
+            if adf[i, j] !== NA && cnames[j] !== :geometry && cnames[j] !== :id
                 collection.features[i].properties[stringnames[j]] = adf[i, j]
             end
         end
