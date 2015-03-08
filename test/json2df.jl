@@ -1,4 +1,4 @@
-using DataFramesIO, Base.Test
+using DataFramesIO, FactCheck
 
 s =  """[
 {
@@ -22,11 +22,11 @@ s =  """[
 ]"""
 
 df = json2df(s)
-@test isequal(size(df, 1), 3)
-@test isequal(size(df, 2), 4)
-@test isequal(names(df), [:company, :id, :price, :symbol])
-@test isequal(df[3, :id], 3)
-@test isequal(df[3, :price], 77.58)
+@fact size(df, 1) => 3
+@fact size(df, 2) => 4
+@fact names(df) => [:company, :id, :price, :symbol]
+@fact df[3, :id] => 3
+@fact df[3, :price] => roughly(77.58)
 json = df2json(df)
 df2 = json2df(json)
-@test df == df2
+@fact df => df2
