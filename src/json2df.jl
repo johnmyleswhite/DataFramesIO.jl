@@ -22,21 +22,17 @@ function json2df(s::String) # -> DataFrame
     if nrows == 0
         return DataFrame()
     end
-    colnamesset = Set(collect(keys(arrayofhashes[1])))
-    for i in 2:length(arrayofhashes)
-        union!(colnamesset, keys(arrayofhashes[i]))
-    end
-    colnames = sort(collect(colnamesset))
+    colnames = collect(keys(arrayofhashes[1]))
+    sort!(colnames)
     # Check that keys are valid column names
     ncols = length(colnames)
-    df = DataFrame(repeat([Any], inner = [ncols]), convert(Vector{Symbol}, colnames), nrows)
+    df = DataFrame(repeat([Any], inner = [ncols]), map(symbol, colnames), nrows)
     for i in 1:nrows
         for j in 1:ncols
-            df[i, j] = get(arrayofhashes[i], colnames[j], NA)
+            df[i, j] = arrayofhashes[i][colnames[j]]
         end
     end
     # tighttypes!(df)
-    # clean_colnames!(df)
     return df
 end
 
@@ -47,9 +43,7 @@ function df2json(adf::AbstractDataFrame) # -> UTF8String
     for i in 1:nrows
         arrayofhashes[i] = Dict{Symbol, Any}()
         for j in 1:ncols
-            if adf[i, j] !== NA
-                arrayofhashes[i][cnames[j]] = adf[i, j]
-            end
+            arrayofhashes[i][cnames[j]] = adf[i, j]
         end
     end
     return JSON.json(arrayofhashes)
